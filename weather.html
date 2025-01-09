@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* CSS for the weather app */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://media.istockphoto.com/id/1007768414/photo/blue-sky-with-bright-sun-and-clouds.jpg?s=612x612&w=0&k=20&c=MGd2-v42lNF7Ie6TtsYoKnohdCfOPFSPQt5XOz4uOy4=s');
+    background-size: cover;
+    color: #fff;
+}
+
+form {
+    margin-top: 100px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 400px;
+}
+
+form input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+form input[type="text"]:focus {
+    outline: none;
+    border: 2px solid #00bcd4;
+}
+
+form button {
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0288d1;
+}
+
+#data {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+
+h4, h5, p {
+    margin: 10px 0;
+}
+</style>
+<body>
+    <center>
+    <form id="formy">
+        <input type="text" placeholder="enter city" id="inputValue"/>
+        <button>Get Weather Report</button>
+    </form>
+    <div id="data"></div>
+    </center>
+    <script>
+        //collect information about city provided by user
+        let form=document.getElementById("formy");
+        let inputValue=document.getElementById("inputValue");
+        let data=document.getElementById("data");
+        let apiKey="12fff54ec640208bd214998f1834b7fc";
+        //to submit the city and to get weather report
+        form.addEventListener("submit",((e)=>{
+            //to hold autosubmission behaviour of the webpage
+            e.preventDefault();
+            const url=`https://api.openweathermap.org/data/2.5/weather?q=${inputValue.value}&appid=${apiKey}&units=metric`;
+            //GET ACTION//(get,put =200)(del=204)(post 201)//status codes
+            fetch(url) 
+                .then((response) => {
+                    console.log(response);
+                    return response.json();
+                })
+                .then((content)=>{
+                    console.log(content);
+                    document.getElementById('data').innerHTML=`<h4>City is : ${content.name}</h4>
+                    <h5>Temperature is : ${content.main.temp}<sup>o</sup>C,/h5>
+                    <p>Cloud Description : ${content.weather[0].description}</p>`;
+                })
+                .catch(()=>{
+                    alert("enter valid city name")
+                })
+        }))
+    </script>
+</body>
+</html>
